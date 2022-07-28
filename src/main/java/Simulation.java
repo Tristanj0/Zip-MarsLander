@@ -44,13 +44,14 @@ public class Simulation {
     String[] a = string.split("\r?\n");
         for (String s : a) {
             System.out.println(s);
+
         }
     }
 
     // main game loop
     public int runSimulation(BurnStream burnSource) {
         DescentEvent status = null;
-        int burnInterval = 0;
+        int burnInterval = 100;
         printString(gameHeader());
         printString(getHeader());
         while (vehicle.stillFlying()) {
@@ -58,6 +59,7 @@ public class Simulation {
             System.out.print(status.toString()+"\t\t");
             vehicle.adjustForBurn(burnSource.getNextBurn(status));
             if (vehicle.outOfFuel()) {
+                System.out.println(status.Fuel);
                 break;
             }
             burnInterval++;
@@ -69,10 +71,13 @@ public class Simulation {
         if (status != null) {
             return status.getStatus();
         }
-        return -1;
+        return -44;
     }
 
     public static void main(String[] args) {
+        Simulation simulation = new Simulation( new Vehicle(5000));
+        BurnInputStream burnInputStream = new BurnInputStream();
+        simulation.runSimulation(burnInputStream);
         // create a new Simulation object with a random starting altitude
         // create a new BurnInputStream
         // pass the new BurnInputStream to the runSimulation method
